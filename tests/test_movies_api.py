@@ -34,13 +34,16 @@ class TestMoviesAPI:
         Обновление существующего фильма.
         """
         response = api_manager.movies_api.create_movie(data=movie_data)
-        assert response.status_code == 201
-        created_movie = response.json()
 
+        assert response.status_code == 201
+
+        created_movie = response.json()
         response = api_manager.movies_api.update_movie(movie_id=created_movie['id'],data=updated_data)
+
         assert response.status_code == 200
 
         updated_movie = response.json()
+
         assert created_movie ["name"] != updated_movie['name']
         assert created_movie ["genreId"] != updated_movie["genreId"]
         assert created_movie ["price"] != updated_movie["price"]
@@ -51,7 +54,6 @@ class TestMoviesAPI:
         """
         created= api_manager.movies_api.create_movie(data=movie_data).json()
         movie_id = created["id"]
-
         response = api_manager.movies_api.get_movie_by_id(movie_id)
         response_data = response.json()
 
@@ -68,10 +70,12 @@ class TestMoviesAPI:
         movie_id = created["id"]
 
         response = api_manager.movies_api.delete_movie(movie_id)
+
         assert response.status_code in [200, 204]
 
         # Повторная попытка получения фильма должна вернуть 404
         response = api_manager.movies_api.get_movie_by_id(movie_id, expected_status=404)
+
         assert response.status_code == 404
 
     def test_get_movies_with_filters(self, api_manager):

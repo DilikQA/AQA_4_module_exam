@@ -7,7 +7,6 @@ from utils.data_generator import DataGenerator
 from api.api_manager import ApiManager
 from faker import Faker
 
-
 faker = Faker()
 
 @pytest.fixture(scope="session")
@@ -60,15 +59,12 @@ def session():
     yield http_session
     http_session.close()
 
-
 @pytest.fixture(scope="session")
 def api_manager(session):
     """
     Фикстура для создания экземпляра ApiManager.
     """
     return ApiManager(session)
-
-
 
 @pytest.fixture
 def movie_data():
@@ -85,7 +81,6 @@ def movie_data():
         "genreId": random.randint(1, 5),
         "rating": round(random.uniform(1.0, 10.0), 1)
     }
-
 
 @pytest.fixture(scope='function')
 def updated_data():
