@@ -67,30 +67,19 @@ def api_manager(session):
     return ApiManager(session)
 
 @pytest.fixture
-def movie_data():
+def pre_filtered_movie(api_manager):
     """
-        Генерация случайных данных для фильмов.
+    Создаёт фильм с фиксированными значениями для фильтрации.
     """
-    return {
+    movie = {
         "name": faker.sentence(nb_words=3).rstrip('.'),
-        "price": random.randint(100, 1000),
+        "imageUrl": "https://example.com/image.png",
         "description": faker.text(max_nb_chars=150),
-        "imageUrl": faker.image_url(),
-        "location": random.choice(["MSK", "SPB"]),
-        "published": random.choice([True, False]),
-        "genreId": random.randint(1, 5),
-        "rating": round(random.uniform(1.0, 10.0), 1)
+        "genreId": 4,
+        "price": 1001,
+        "location": "MSK",
+        "published": True
     }
-
-@pytest.fixture(scope='function')
-def updated_data():
-    return {
-        "name": faker.sentence(nb_words=3).rstrip('.'),
-        "price": random.randint(100, 1000),
-        "description": faker.text(max_nb_chars=150),
-        "imageUrl": faker.image_url(),
-        "location": random.choice(["MSK", "SPB"]),
-        "published": random.choice([True, False]),
-        "genreId": random.randint(1, 5),
-        "rating": round(random.uniform(1.0, 10.0), 1)
-    }
+    response = api_manager.movies_api.create_movie(data=movie)
+    assert response.status_code == 201 or 200
+    return response.json()

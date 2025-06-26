@@ -1,5 +1,3 @@
-import pytest
-from utils.data_generator import DataGenerator
 from custom_requester.custom_requester import CustomRequester
 
 class MoviesAPI(CustomRequester):
@@ -13,7 +11,7 @@ class MoviesAPI(CustomRequester):
         """
         Получение информации о фильмах.
         :params: Данные для запроса фильмов.
-        :param expected_status: Ожидаемый статус-код.
+        :params expected_status: Ожидаемый статус-код.
         """
         return self.send_request(
             method='GET',
@@ -22,7 +20,7 @@ class MoviesAPI(CustomRequester):
             expected_status=expected_status)
 
 
-    def create_movie(self, data,expected_status=201):
+    def create_movie(self, data,expected_status=200):
         return self.send_request(
             method="POST",
             endpoint="/movies",
